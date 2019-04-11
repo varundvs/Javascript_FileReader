@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<p>Enter Text below</p>
+		<p>
+		  <textarea id = "textinput" rows="10" cols="100"></textarea><br/>
+		  <button onclick="processFile()">submit</button>
+		</p>
+
+		<script type="text/javascript" src="assignment_js.js"></script>
+		<script>
+			function readFile(){
+				var req = new XMLHttpRequest();
+				req.onload = function(){
+					processFile(this.responseText);
+				};
+				req.open('GET', './big.txt');
+				req.send();
+			}
+		
+			function processFile() {
+			
+				//readFile();
+				var txt = document.getElementById("textinput").value;
+
+				var processData = new ProcessData();
+				processData.process(txt);
+				processData.sortByCount();
+				console.log(processData);
+			  
+				var x = document.createElement("UL");
+				x.setAttribute("id", "myUL");
+				document.body.appendChild(x);
+			  
+				var words = processData.getWords();
+				for (var i = 0; i < words.length; i++) {
+					var y = document.createElement("LI");
+					if(i<10){
+						processData.getMeaning(words[i]);
+					}
+					var t = document.createTextNode(" "+words[i] + ': ' + processData.getCount(words[i]));
+					y.appendChild(t);
+					document.getElementById("myUL").appendChild(y);
+					
+					
+				}
+			}
+		</script>
+	</body>
+</html>
